@@ -7,7 +7,7 @@ import tilesReducer from './piece';
 
 
 
-const rootReducer = combineReducers({board: boardReducer, piece: piecesReducer, piecetiles: tilesReducer})
+const rootReducer = combineReducers({board: boardReducer, piece: piecesReducer, pieceTiles: tilesReducer})
 const logger = createLogger({collapsed: true})
 const store = createStore(rootReducer, applyMiddleware(thunk, logger))
 

@@ -16,8 +16,10 @@ const createdGrid = grid => {
 
 export const createGrid = () => {
     return function (dispatch) {
-        const grid = new Array(20);
-        grid.fill(Array(10).fill(0))
+        let grid = new Array(20);
+        for (let i = 0; i < grid.length; i++) {
+            grid[i] = Array(10).fill(0)
+        }
 
         dispatch(createdGrid(grid))
     }

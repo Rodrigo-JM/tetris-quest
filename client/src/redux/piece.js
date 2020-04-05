@@ -2,6 +2,8 @@
 //spawns tiles in proper locations
 //conains movement rotation functions
 
+import piecesReducer from "./pieces"
+
 const canSpawn = (piece, grid) => {
     switch (piece.type) {
         case 'BLOCK': 
@@ -29,7 +31,7 @@ export const createTiles = (piece, grid) => {
     return function(dispatch) {
         if (canSpawn(piece, grid)) {
             const tiles = [[piece.center[0], piece.center[1]]]
-
+            grid[piece.center[1]][piece.center[0]] = 1
             dispatch(createdTiles(tiles))
         }
     }

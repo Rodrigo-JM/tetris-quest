@@ -46,7 +46,7 @@ export class Grid extends Component {
             this.props.createTiles(this.props.piece, this.props.board)
         }
 
-        
+
     }
     render() {
         return (
@@ -67,6 +67,7 @@ const mapStateToProps = (state) => {
     return {
         board: state.board,
         piece: state.piece,
+        tiles: state.pieceTiles,
 
     }
 }
