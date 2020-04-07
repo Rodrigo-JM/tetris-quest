@@ -25,12 +25,28 @@ export const createPiece = (centerLocation, type) => {
         const piece = {
             type: type,
             center: location,
+            rotationIndex: 0,
         }
     
         dispatch(createdPiece(piece))
     }    
 }
 
+export const movePiece = (move, piece) => {
+    return function(dispatch) {
+        const newLocation = [...piece.center]
+
+        if (move === 'right') {
+            newLocation[0] += 1;
+        } else if (move === 'left') {
+            newLocation[0] -= 1;
+        }
+        console.log(newLocation)
+        piece.center = newLocation;
+
+        dispatch(createdPiece(piece))
+    }
+}
 
 const piecesReducer = (state = {}, action) => {
     switch (action.type) {

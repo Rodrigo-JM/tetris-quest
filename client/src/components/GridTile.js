@@ -1,14 +1,36 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
 export const GridTile = (props) => {
-    return (
-        <td data-y={props.y} data-x={props.x} className={props.tiles.length && (props.x === props.tiles[0][0] && props.y === props.tiles[0][1]) ? 'selectedTile' : 'tile'}>{props.cell}</td>
-    )
-}
+  const colorTiles = (xy, tiles) => {
+    let bool = false ;
+
+    for (let i = 0; i < tiles.length; i++) {
+        if (xy[0] === tiles[i][0] && xy[1] === tiles[i][1]) {
+            bool = true;
+        }
+    }
+    return bool
+  }
+  console.log('rendered')
+  return (
+    <td
+      data-y={props.y}
+      data-x={props.x}
+      className={
+        (props.tiles.length &&
+        colorTiles([props.x, props.y], props.tiles))
+          ? "selectedTile"
+          : "tile"
+      }
+    >
+      {props.cell}
+    </td>
+  );
+};
 
 const mapStateToProps = (state) => ({
-    tiles: state.pieceTiles
-})
+  tiles: state.pieceTiles,
+});
 
-export default connect(mapStateToProps)(GridTile)
+export default connect(mapStateToProps)(GridTile);

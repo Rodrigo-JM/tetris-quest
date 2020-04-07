@@ -1,4 +1,4 @@
-const JLSTZ_OFFSET_TESTS = [
+export const JLSTZ_OFFSET_TESTS = [
   [
     [0, 0],
     [0, 0],
@@ -29,7 +29,7 @@ const JLSTZ_OFFSET_TESTS = [
   ],
 ];
 
-const I_OFFSET_DATA = [
+export const I_OFFSET_DATA = [
   [
     [0, 0],
     [-1, 0],
@@ -60,4 +60,4 @@ const I_OFFSET_DATA = [
   ],
 ];
 
-const O_OFFSET_DATA = [[[0, 1]], [[0, -1]], [[-1, 1]], [[-1, 0]]];
+export const O_OFFSET_DATA = [[[0, 1]], [[0, -1]], [[-1, 1]], [[-1, 0]]];
