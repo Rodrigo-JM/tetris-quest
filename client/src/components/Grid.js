@@ -14,7 +14,8 @@ const keysObj = {
    88: 'x'
 }
 
-let currentPieceLocation = []
+let currentPieceLocation = [];
+let oldRotationIndex = 0;
 
 const locationChanged = (location) => {
     if (location[0] !== currentPieceLocation[0] || location[1] !== currentPieceLocation[1]) {
@@ -23,6 +24,15 @@ const locationChanged = (location) => {
         return true;
     } else {
         return false
+    }
+}
+
+const rotationChanged = (newRotation, oldRotationIndex) => {
+    if (newRotation === oldRotationIndex) {
+        return false
+    } else {
+        oldRotationIndex = newRotation
+        return true
     }
 }
 
@@ -39,10 +49,15 @@ export class Grid extends Component {
         this.props.createPiece(null, 'L');
     }
 
-    componentDidUpdate() {
-        console.log('updated')
-        if (locationChanged(this.props.piece.center)) {
+    handleUpdate() {
+        const rotation = rotationChanged(this.props.piece.rotationIndex, oldRotationIndex)
+        const location = locationChanged(this.props.piece.center)
+        if (location) {
             this.props.createTiles(this.props.piece, this.props.board)
+        } else if (rotation) {
+            console.log('changed', oldRotationIndex, this.props.piece.rotationIndex)
+            this.props.createTiles(this.props.piece, this.props.board, oldRotationIndex)
+         
         }
 
 
@@ -50,8 +65,10 @@ export class Grid extends Component {
 
     handleKeys(event) {
         const move = keysObj[event.keyCode];
+        oldRotationIndex = this.props.piece.rotationIndex
         this.props.movePiece(move, this.props.piece)
-        this.componentDidUpdate()
+        
+        this.handleUpdate()
     }
 
     createKeyEvent = () => {
