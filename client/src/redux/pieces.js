@@ -21,7 +21,6 @@ export const createPiece = (centerLocation, type) => {
         if (centerLocation) {
             location = centerLocation;
         }
-        console.log(location)
         const piece = {
             type: type,
             center: location,
@@ -44,7 +43,10 @@ export const movePiece = (move, piece) => {
             newRotation = ((newRotation + 1) % 4 + 4) % 4
         } else if (move === 'z') {
             newRotation = ((newRotation - 1) % 4 + 4) % 4
+        } else if (move === 'down') {
+            newLocation[1] -= 1; 
         }
+
         piece.center = newLocation;
         piece.rotationIndex = newRotation
         dispatch(createdPiece(piece))

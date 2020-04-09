@@ -4,10 +4,10 @@ import thunk from "redux-thunk"
 import boardReducer from "./board";
 import piecesReducer from './pieces';
 import tilesReducer from './piece';
+import gameReducer from './game'
 
 
-
-const rootReducer = combineReducers({board: boardReducer, piece: piecesReducer, pieceTiles: tilesReducer})
+const rootReducer = combineReducers({board: boardReducer, piece: piecesReducer, pieceTiles: tilesReducer, level: gameReducer})
 const logger = createLogger({collapsed: true})
 const store = createStore(rootReducer, applyMiddleware(thunk, logger))
 

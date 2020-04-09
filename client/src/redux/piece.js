@@ -8,7 +8,6 @@ import {
 } from "./rotationTests";
 import piecesReducer from "./pieces";
 
-console.log(JLSTZ_OFFSET_TESTS);
 // const piecesToObj = {
 //     'L': {
 //         0:
@@ -27,15 +26,10 @@ const checkBorders = (tiles, grid) => {
       type = "down";
     }
   }
-  console.log(type);
   return type;
 };
 
-
-
 const canSpawn = (piece, grid, tiles) => {
-  switch (piece.type) {
-    case "L":
       let canSpawn = true;
       for (let i = 0; i < 4; i++) {
         let tile = tiles[i];
@@ -48,12 +42,11 @@ const canSpawn = (piece, grid, tiles) => {
         }
       }
       return canSpawn;
-    default:
-      return null;
-  }
+
 };
 
 const checkAndBuildPiece = (piece, grid, oldRotation, offset = [0, 0]) => {
+  console.log(piece) 
   let pieceTiles = buildTilesForPiece(piece, offset);
   if (canSpawn(piece, grid, pieceTiles)) {
     return pieceTiles;
@@ -78,7 +71,7 @@ const createdTiles = (tiles) => {
 export const createTiles = (piece, grid, oldRotationIndex = 0) => {
   return function (dispatch) {
     const pieceTiles = checkAndBuildPiece(piece, grid, oldRotationIndex);
-
+    console.log(pieceTiles, 'piece tiles')
     dispatch(createdTiles(pieceTiles));
   };
 };
@@ -96,7 +89,6 @@ const tilesReducer = (state = [], action) => {
 const buildTilesForPiece = (piece, offset) => {
   piece.center[0] = piece.center[0] + offset[0];
   piece.center[1] = piece.center[1] + offset[1];
-  console.log(piece.rotationIndex, '<<<<<<<<<<<<,,rotatioinn')
   const L_SHAPES = [
     [
       [piece.center[0] - 1, piece.center[1]],
@@ -110,15 +102,45 @@ const buildTilesForPiece = (piece, offset) => {
       [piece.center[0], piece.center[1] - 1],
       [piece.center[0] + 1, piece.center[1] - 1],
     ],
-    [[piece.center[0] + 1, piece.center[1]], piece.center, [piece.center[0] - 1, piece.center[1]], [piece.center[0] - 1, piece.center[1]- 1]],
-    [[piece.center[0], piece.center[1] -1], piece.center, [piece.center[0], piece.center[1] + 1], [piece.center[0] - 1, piece.center[1] + 1]],
+    [
+      [piece.center[0] + 1, piece.center[1]],
+      piece.center,
+      [piece.center[0] - 1, piece.center[1]],
+      [piece.center[0] - 1, piece.center[1] - 1],
+    ],
+    [
+      [piece.center[0], piece.center[1] - 1],
+      piece.center,
+      [piece.center[0], piece.center[1] + 1],
+      [piece.center[0] - 1, piece.center[1] + 1],
+    ],
   ];
 
   const J_SHAPES = [
-    [[], [], [], [], []],
-    [[], [], [], [], []],
-    [[], [], [], [], []],
-    [[], [], [], [], []],
+    [
+      [piece.center[0] - 1, piece.center[1] + 1],
+      [piece.center[0] - 1, piece.center[1]],
+      piece.center,
+      [piece.center[0] + 1, piece.center[1]],
+    ],
+    [
+      [piece.center[0] + 1, piece.center[1] + 1],
+      [piece.center[0], piece.center[1] + 1],
+      piece.center,
+      [piece.center[0], piece.center[1] - 1],
+    ],
+    [
+      [piece.center[0] + 1, piece.center[1] - 1],
+      [piece.center[0] + 1, piece.center[1]],
+      piece.center,
+      [piece.center[0] - 1, piece.center[1]],
+    ],
+    [
+      [piece.center[0] - 1, piece.center[1] - 1],
+      [piece.center[0], piece.center[1] - 1],
+      piece.center,
+      [piece.center[0], piece.center[1] + 1],
+    ]
   ];
 
   const S_SHAPES = [
@@ -141,20 +163,14 @@ const buildTilesForPiece = (piece, offset) => {
     [[], [], [], [], []],
     [[], [], [], [], []],
   ];
- 
 
-  switch (piece.type) {
-    case "L":
-      console.log(L_SHAPES[piece.rotationIndex])
-      return L_SHAPES[piece.rotationIndex]
+  if (piece.type === "L") {
+    return L_SHAPES[piece.rotationIndex];
 
-    default:
-      return null;
+  } else if (piece.type === "J") {
+
+    return J_SHAPES[piece.rotationIndex];
   }
-  
 };
-
-
-  
 
 export default tilesReducer;
