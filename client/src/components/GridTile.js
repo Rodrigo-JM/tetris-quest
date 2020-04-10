@@ -12,7 +12,6 @@ export const GridTile = (props) => {
     }
     return bool
   }
-  console.log('rendered')
   return (
     <td
       data-y={props.y}

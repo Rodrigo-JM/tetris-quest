@@ -16,7 +16,7 @@ const createdPiece = piece => {
 
 export const createPiece = (centerLocation, type) => {
     return function(dispatch) {
-        let location = [4, 19]
+        let location = [4, 10]
     
         if (centerLocation) {
             location = centerLocation;
@@ -24,7 +24,8 @@ export const createPiece = (centerLocation, type) => {
         const piece = {
             type: type,
             center: location,
-            rotationIndex: 0
+            rotationIndex: 0,
+            oldRotationIndex: 0
         }
     
         dispatch(createdPiece(piece))

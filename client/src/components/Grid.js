@@ -16,7 +16,6 @@ const keysObj = {
 };
 
 let currentPieceLocation = [];
-let oldRotationIndex = 0;
 
 const locationChanged = (location) => {
   if (
@@ -24,7 +23,6 @@ const locationChanged = (location) => {
     location[1] !== currentPieceLocation[1]
   ) {
     currentPieceLocation = location;
-    console.log(currentPieceLocation, "<< current location >>", location);
     return true;
   } else {
     return false;
@@ -35,7 +33,6 @@ const rotationChanged = (newRotation, oldRotationIndex) => {
   if (newRotation === oldRotationIndex) {
     return false;
   } else {
-    oldRotationIndex = newRotation;
     return true;
   }
 };
@@ -54,41 +51,26 @@ export class Grid extends Component {
     this.props.build();
     this.createKeyEvent();
     this.gameTimer();
-    this.props.createPiece(null, 'J');
+    this.props.createPiece(null, 'S');
   }
 
   gameTimer() {
 
-    levelTimer = setInterval(
-      () => {
-          this.props.movePiece('down', this.props.piece)
-          this.handleUpdate()
-      },
-      this.props.level * 1000
-    );
+    // levelTimer = setInterval(
+    //   () => {
+    //       let event = {keyCode: 40} 
+    //       this.handleKeys(event)
+    //   },
+    //   this.props.level * 1000
+    // );
   }
 
   handleUpdate() {
-    const rotation = rotationChanged(
-      this.props.piece.rotationIndex,
-      oldRotationIndex
-    );
-    const location = locationChanged(this.props.piece.center);
-    if (location) {
       this.props.createTiles(this.props.piece, this.props.board);
-    } else if (rotation) {
-      console.log("changed", oldRotationIndex, this.props.piece.rotationIndex);
-      this.props.createTiles(
-        this.props.piece,
-        this.props.board,
-        oldRotationIndex
-      );
-    }
   }
 
   handleKeys(event) {
     const move = keysObj[event.keyCode];
-    oldRotationIndex = this.props.piece.rotationIndex;
     this.props.movePiece(move, this.props.piece);
 
     this.handleUpdate();
