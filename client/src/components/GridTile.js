@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 export const GridTile = (props) => {
+
   const colorTiles = (xy, tiles) => {
     let bool = false ;
 
@@ -28,8 +29,5 @@ export const GridTile = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  tiles: state.pieceTiles,
-});
+export default GridTile
 
-export default connect(mapStateToProps)(GridTile);

@@ -6,7 +6,7 @@ export default function GridRow(props) {
         <tr className={(props.index < 2) ? 'red' : ''}>
             {
                 props.row.map((cells, index) => {
-                    return <GridTile x={index} y={props.index} cell={cells} />
+                    return <GridTile x={index} y={props.index} cell={cells} tiles={props.tiles}/>
                 })
             }
         </tr>

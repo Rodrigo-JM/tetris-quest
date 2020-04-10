@@ -39,11 +39,11 @@ const rotationChanged = (newRotation, oldRotationIndex) => {
 
 let levelTimer;
 
-export class Grid extends Component {
+class Grid extends Component {
   constructor() {
     super();
     this.handleKeys = this.handleKeys.bind(this);
-    this.handleUpdate = this.handleUpdate.bind(this);
+    // this.handleUpdate = this.handleUpdate.bind(this);
     this.gameTimer = this.gameTimer.bind(this);
   }
 
@@ -64,16 +64,10 @@ export class Grid extends Component {
     //   this.props.level * 1000
     // );
   }
-
-  handleUpdate() {
-      this.props.createTiles(this.props.piece, this.props.board);
-  }
-
+  
   handleKeys(event) {
     const move = keysObj[event.keyCode];
-    this.props.movePiece(move, this.props.piece);
-
-    this.handleUpdate();
+    this.props.movePiece(move, this.props.piece, this.props.board);
   }
 
   createKeyEvent = () => {
@@ -86,7 +80,7 @@ export class Grid extends Component {
         <tbody>
           {this.props.board
             .map((row, index) => {
-              return <GridRow index={index} key={index} row={row} />;
+              return <GridRow index={index} key={index} row={row} tiles={this.props.tiles}/>;
             })
             .reverse()}
         </tbody>
@@ -99,7 +93,7 @@ const mapStateToProps = (state) => {
   return {
     board: state.board,
     piece: state.piece,
-    tiles: state.pieceTiles,
+    tiles: state.piece.tiles,
     level: state.level,
   };
 };
@@ -108,8 +102,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     build: () => dispatch(createGrid()),
     createPiece: (center, type) => dispatch(createPiece(center, type)),
-    createTiles: (piece, grid) => dispatch(createTiles(piece, grid)),
-    movePiece: (move, piece) => dispatch(movePiece(move, piece)),
+    movePiece: (move, piece, grid) => dispatch(movePiece(move, piece, grid)),
     levelUp: (level) => dispatch(levelUp(level)),
   };
 };
