@@ -2,7 +2,7 @@
 //spawns pieces
 //handles player input
 //stores offset datasets
-import { killPiece } from "./board";
+import { killPiece, clearLine } from "./board";
 
 import {
   JLSTZ_OFFSET_TESTS,
@@ -12,7 +12,13 @@ import {
 
 const CREATED_PIECE = "CREATED_PIECE";
 const CLEAR_TILES = "CLEAR_TILES";
+const ENDED_GAME = "ENDED_GAME"
 
+const endGame = () => {
+  return {
+    type: ENDED_GAME
+  }
+}
 const getTestData = (pieceType) => {
   if (pieceType === "O") {
     return O_OFFSET_TESTS;
@@ -50,28 +56,23 @@ const rotatePiece = (piece, grid) => {
       offsetVal1[1] - offsetVal2[1],
     ];
     let pieceTiles = buildTilesForPiece(piece, endOffset);
-
     if (testTilesForOverlap(pieceTiles, grid)) {
-      (console.log('passed rotation test,', pieceTiles))
       piece.oldRotationIndex = piece.rotationIndex;
       return pieceTiles;
     } else {
-      piece.center = safeGuardPiecePosition;
+      piece.center = [...safeGuardPiecePosition]
     }
   }
 
   piece.rotationIndex = piece.oldRotationIndex;
   piece.center = safeGuardPiecePosition;
-  console.log('did not rotate')
-  return buildTilesForPiece(piece, [0, 0]);
+  return false
 };
 
 const testTilesForOverlap = (tiles, grid, xOffset = 0, yOffset = 0) => {
-  // const tiles = piece.tiles;
   const isLegal = tiles.reduce((bool, tile) => {
     let xCoord = tile[0] + xOffset;
     let yCoord = tile[1] + yOffset;
-    console.log(xCoord, yCoord)
     if (xCoord < 0 || yCoord < 0 || xCoord > 9 || grid[yCoord][xCoord] > 0) {
       return false
     }
@@ -92,26 +93,15 @@ const isMoveLegal = (move, piece, grid) => {
   }
 };
 
-const isPieceDead = (piece, grid, tiles, dispatch) => {
-  if (tiles && tiles.length) {
-    for (let i = 0; i < tiles.length; i++) {
-      if (tiles[i][1] < 0 || grid[tiles[i][1]][tiles[i][0]] > 0) {
-        dispatch(killPiece(piece, grid, tiles));
-        return true;
-      }
-    }
 
-    return false;
-  }
-};
-
-export const createPiece = (centerLocation, type, tiles = []) => {
+export const createPiece = (centerLocation, type, tiles = [], grid =[]) => {
   return function (dispatch) {
     let location = [4, 19];
 
     if (centerLocation) {
       location = centerLocation;
     }
+
     const piece = {
       type: type,
       center: location,
@@ -124,21 +114,26 @@ export const createPiece = (centerLocation, type, tiles = []) => {
       piece.tiles = buildTilesForPiece(piece, [0, -1])
     }
 
+    if (grid.length && !testTilesForOverlap(piece.tiles, grid)) {
+      dispatch(endGame())
+      return
+    }
+
     dispatch(createdPiece(piece));
   };
 };
 
-const createNewPiece = () => {
+const createNewPiece = (grid) => {
   return function (dispatch) {
     let type = pieceTypes[Math.floor(Math.random() * Math.floor(7))];
 
-    dispatch(createPiece(null, type));
+    dispatch(createPiece(null, type, undefined, grid));
   };
 };
 
 export const movePiece = (move, piece, grid) => {
   return function (dispatch) {
-    let newLocation = [...piece.center];
+    let oldPiece = {...piece} ;
     let newRotation = piece.rotationIndex;
 
     if (move === "right" && isMoveLegal(move, piece, grid)) {
@@ -153,14 +148,27 @@ export const movePiece = (move, piece, grid) => {
       piece.rotationIndex = (((newRotation + 1) % 4) + 4) % 4;
 
       piece.tiles = rotatePiece(piece, grid);
+      if (!piece.tiles) {
+        piece = oldPiece
+      }
     } else if (move === "z") {
       piece.rotationIndex =  (((newRotation - 1) % 4) + 4) % 4;
 
       piece.tiles = rotatePiece(piece, grid);
+      if (!piece.tiles) {
+        piece = oldPiece
+      }
     } else if (move === "down") {
-      piece.center[1] -= 1;
-
-      piece.tiles = buildTilesForPiece(piece, [0, 0])
+      if (testTilesForOverlap(piece.tiles, grid,0,-1)) {
+        piece.center[1] -= 1;
+  
+        piece.tiles = buildTilesForPiece(piece, [0, 0])
+      } else {
+        dispatch(killPiece(piece, grid, piece.tiles))
+        dispatch(createNewPiece(grid))
+        dispatch(clearLine(grid))
+        return
+      }
     }
 
     const newPiece = {...piece}

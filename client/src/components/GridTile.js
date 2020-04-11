@@ -21,10 +21,10 @@ export const GridTile = (props) => {
         (props.tiles.length &&
         colorTiles([props.x, props.y], props.tiles))
           ? "selectedTile"
-          : "tile"
+          : (props.cell > 0) ? "dead" : "tile"
       }
     >
-      {props.cell}
+      
     </td>
   );
 };
