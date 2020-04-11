@@ -21,7 +21,7 @@ export const GridTile = (props) => {
         (props.tiles.length &&
         colorTiles([props.x, props.y], props.tiles))
           ? "selectedTile"
-          : (props.cell > 0) ? "dead" : "tile"
+          : (props.cell > 0) ? "dead" : (props.preview.length && colorTiles([props.x, props.y], props.preview)) ? "preview" : 'tile' 
       }
     >
       

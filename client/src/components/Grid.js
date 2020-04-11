@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import GridRow from "./GridRow";
 import { createGrid } from "../redux/board";
-import { createPiece, movePiece } from "../redux/pieces";
-import { levelUp } from "../redux/game";
+import { createNewPiece, movePiece } from "../redux/pieces";
+import { levelUp, newGame } from "../redux/game";
 
 const keysObj = {
   40: "down",
@@ -28,14 +28,14 @@ class Grid extends Component {
     this.props.build();
     this.createKeyEvent();
     this.gameTimer();
-    this.props.createPiece(null, "S");
+    this.props.createPiece(this.props.grid);
   }
 
   gameTimer() {
-    levelTimer = setInterval(() => {
-      let event = { keyCode: 40 };
-      this.handleKeys(event);
-    }, this.props.level * 1000);
+    // levelTimer = setInterval(() => {
+    //   let event = { keyCode: 40 };
+    //   this.handleKeys(event);
+    // }, this.props.level * 1000);
   }
 
   handleKeys(event) {
@@ -60,7 +60,12 @@ class Grid extends Component {
   render() {
     return (
       <div>
-        {(this.endGame()) ? <h1>Game over, bud</h1>:
+        {(this.endGame()) ? <div><h1>Game over, bud</h1>
+        <button onClick={() => {
+          this.props.newGame() 
+          this.gameTimer()
+        }
+        }>Play Again</button></div>:
         <table>
           <tbody>
             {this.props.board
@@ -71,6 +76,7 @@ class Grid extends Component {
                     key={index}
                     row={row}
                     tiles={this.props.tiles}
+                    preview={this.props.piece.preview}
                   />
                 );
               })
@@ -95,9 +101,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     build: () => dispatch(createGrid()),
-    createPiece: (center, type) => dispatch(createPiece(center, type)),
+    createPiece: (grid) => dispatch(createNewPiece(grid)),
     movePiece: (move, piece, grid) => dispatch(movePiece(move, piece, grid)),
     levelUp: (level) => dispatch(levelUp(level)),
+    newGame: () => dispatch(newGame()),
   };
 };
 

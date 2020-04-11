@@ -12,13 +12,13 @@ import {
 
 const CREATED_PIECE = "CREATED_PIECE";
 const CLEAR_TILES = "CLEAR_TILES";
-const ENDED_GAME = "ENDED_GAME"
+const ENDED_GAME = "ENDED_GAME";
 
 const endGame = () => {
   return {
-    type: ENDED_GAME
-  }
-}
+    type: ENDED_GAME,
+  };
+};
 const getTestData = (pieceType) => {
   if (pieceType === "O") {
     return O_OFFSET_TESTS;
@@ -27,6 +27,22 @@ const getTestData = (pieceType) => {
   } else {
     return JLSTZ_OFFSET_TESTS;
   }
+};
+
+const previewTiles = (tiles, grid) => {
+  let preViewTiles = [...tiles];
+
+  if (grid.length) {
+    while (testTilesForOverlap(preViewTiles, grid, 0, -1)) {
+      preViewTiles = preViewTiles.map((tile) => {
+        return [tile[0], tile[1] - 1];
+      });
+    }
+
+    console.log(preViewTiles);
+  }
+
+  return preViewTiles;
 };
 
 const clearTiles = () => {
@@ -60,21 +76,22 @@ const rotatePiece = (piece, grid) => {
       piece.oldRotationIndex = piece.rotationIndex;
       return pieceTiles;
     } else {
-      piece.center = [...safeGuardPiecePosition]
+      piece.center = [...safeGuardPiecePosition];
     }
   }
 
   piece.rotationIndex = piece.oldRotationIndex;
   piece.center = safeGuardPiecePosition;
-  return false
+  return false;
 };
 
 const testTilesForOverlap = (tiles, grid, xOffset = 0, yOffset = 0) => {
   const isLegal = tiles.reduce((bool, tile) => {
     let xCoord = tile[0] + xOffset;
     let yCoord = tile[1] + yOffset;
+    console.log(yCoord);
     if (xCoord < 0 || yCoord < 0 || xCoord > 9 || grid[yCoord][xCoord] > 0) {
-      return false
+      return false;
     }
     return bool;
   }, true);
@@ -87,14 +104,13 @@ const isMoveLegal = (move, piece, grid) => {
     case "left":
       return testTilesForOverlap(piece.tiles, grid, -1);
     case "right":
-      return testTilesForOverlap(piece.tiles, grid, 1);  
-    default: 
-      return false
+      return testTilesForOverlap(piece.tiles, grid, 1);
+    default:
+      return false;
   }
 };
 
-
-export const createPiece = (centerLocation, type, tiles = [], grid =[]) => {
+export const createPiece = (centerLocation, type, tiles = [], grid = []) => {
   return function (dispatch) {
     let location = [4, 19];
 
@@ -107,23 +123,29 @@ export const createPiece = (centerLocation, type, tiles = [], grid =[]) => {
       center: location,
       rotationIndex: 0,
       oldRotationIndex: 0,
-      tiles: tiles
+      tiles: tiles,
+      preview: [],
     };
 
     if (!piece.tiles.length) {
-      piece.tiles = buildTilesForPiece(piece, [0, -1])
+      piece.tiles = buildTilesForPiece(piece, [0, -1]);
+    }
+    // console.log(piece.tiles, 'tileess')
+    if (piece.tiles.length) {
+      piece.preview = previewTiles(piece.tiles, grid);
+      console.log(piece.preview, "undefined?");
     }
 
     if (grid.length && !testTilesForOverlap(piece.tiles, grid)) {
-      dispatch(endGame())
-      return
+      dispatch(endGame());
+      return;
     }
 
     dispatch(createdPiece(piece));
   };
 };
 
-const createNewPiece = (grid) => {
+export const createNewPiece = (grid) => {
   return function (dispatch) {
     let type = pieceTypes[Math.floor(Math.random() * Math.floor(7))];
 
@@ -133,45 +155,50 @@ const createNewPiece = (grid) => {
 
 export const movePiece = (move, piece, grid) => {
   return function (dispatch) {
-    let oldPiece = {...piece} ;
+    let oldPiece = { ...piece };
     let newRotation = piece.rotationIndex;
 
     if (move === "right" && isMoveLegal(move, piece, grid)) {
       piece.center[0] += 1;
-      piece.tiles = buildTilesForPiece(piece, [0, 0])
-
+      piece.tiles = buildTilesForPiece(piece, [0, 0]);
     } else if (move === "left" && isMoveLegal(move, piece, grid)) {
       piece.center[0] -= 1;
 
-      piece.tiles = buildTilesForPiece(piece, [0, 0])
+      piece.tiles = buildTilesForPiece(piece, [0, 0]);
     } else if (move === "x") {
       piece.rotationIndex = (((newRotation + 1) % 4) + 4) % 4;
 
       piece.tiles = rotatePiece(piece, grid);
       if (!piece.tiles) {
-        piece = oldPiece
+        piece = oldPiece;
       }
     } else if (move === "z") {
-      piece.rotationIndex =  (((newRotation - 1) % 4) + 4) % 4;
+      piece.rotationIndex = (((newRotation - 1) % 4) + 4) % 4;
 
       piece.tiles = rotatePiece(piece, grid);
       if (!piece.tiles) {
-        piece = oldPiece
+        piece = oldPiece;
       }
     } else if (move === "down") {
-      if (testTilesForOverlap(piece.tiles, grid,0,-1)) {
+      if (testTilesForOverlap(piece.tiles, grid, 0, -1)) {
         piece.center[1] -= 1;
-  
-        piece.tiles = buildTilesForPiece(piece, [0, 0])
-      } else {
-        dispatch(killPiece(piece, grid, piece.tiles))
-        dispatch(createNewPiece(grid))
-        dispatch(clearLine(grid))
-        return
-      }
-    }
 
-    const newPiece = {...piece}
+        piece.tiles = buildTilesForPiece(piece, [0, 0]);
+      } else {
+        dispatch(killPiece(piece, grid, piece.tiles));
+        dispatch(createNewPiece(grid));
+        dispatch(clearLine(grid));
+        return;
+      }
+    } else if (move === "space") {
+      dispatch(killPiece(piece, grid, piece.preview));
+      dispatch(createNewPiece(grid));
+      dispatch(clearLine(grid));
+      return;
+    }
+    
+    piece.preview = previewTiles(piece.tiles, grid);
+    const newPiece = { ...piece };
     dispatch(createdPiece(newPiece));
   };
 };

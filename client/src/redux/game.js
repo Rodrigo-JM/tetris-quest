@@ -1,4 +1,9 @@
+import { createGrid } from './board'
+
 const LEVELED_UP = "LEVELED_UP";
+const NEW_GAME = "NEW_GAME"
+const ENDED_GAME = "ENDED_GAME"
+
 
 const leveledUp = (level) => {
   return {
@@ -7,12 +12,18 @@ const leveledUp = (level) => {
   };
 };
 
-const ENDED_GAME = "ENDED_GAME"
-// export const endGame = () => {
-//     return function (dispatch) {
+const newGameAction = () => {
+    return {
+        type: NEW_GAME
+    }
+}
 
-//     }
-// }
+export const newGame = () => {
+    return function(dispatch) {
+        dispatch(createGrid());
+        dispatch(newGameAction())
+    }
+}
 
 export const levelUp = (level) => {
   return function (dispatch) {
@@ -24,6 +35,11 @@ export const levelUp = (level) => {
 
 const gameReducer = (state = { playing: true, level: 1 }, action) => {
   switch (action.type) {
+    case NEW_GAME: 
+        return {
+            level: 1,
+            playing: true
+        }
     case ENDED_GAME:
       return {
         ...state,
