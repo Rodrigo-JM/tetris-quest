@@ -20,7 +20,7 @@ class Grid extends Component {
   constructor() {
     super();
     this.handleKeys = this.handleKeys.bind(this);
-    this.endGame = this.endGame.bind(this)
+    this.endGame = this.endGame.bind(this);
     this.gameTimer = this.gameTimer.bind(this);
   }
 
@@ -32,15 +32,20 @@ class Grid extends Component {
   }
 
   gameTimer() {
-    // levelTimer = setInterval(() => {
-    //   let event = { keyCode: 40 };
-    //   this.handleKeys(event);
-    // }, this.props.level * 1000);
+    levelTimer = setInterval(() => {
+      let event = { keyCode: 40 };
+      this.handleKeys(event);
+    }, this.props.level * 1000);
   }
 
   handleKeys(event) {
     const move = keysObj[event.keyCode];
-    this.props.movePiece(move, this.props.piece, this.props.board);
+    this.props.movePiece(
+      move,
+      this.props.piece,
+      this.props.board,
+      this.props.game
+    );
   }
 
   createKeyEvent = () => {
@@ -49,40 +54,51 @@ class Grid extends Component {
 
   endGame() {
     if (this.props.game && !this.props.game.playing) {
-      clearInterval(levelTimer)
-      return true
+      clearInterval(levelTimer);
+      return true;
     } else {
-      return false
+      return false;
     }
-
   }
 
   render() {
     return (
       <div>
-        {(this.endGame()) ? <div><h1>Game over, bud</h1>
-        <button onClick={() => {
-          this.props.newGame() 
-          this.gameTimer()
-        }
-        }>Play Again</button></div>:
-        <table>
-          <tbody>
-            {this.props.board
-              .map((row, index) => {
-                return (
-                  <GridRow
-                    index={index}
-                    key={index}
-                    row={row}
-                    tiles={this.props.tiles}
-                    preview={this.props.piece.preview}
-                  />
-                );
-              })
-              .reverse()}
-          </tbody>
-        </table>}
+        {this.endGame() ? (
+          <div>
+            <h1>Game over, bud</h1>
+            <button
+              onClick={() => {
+                this.props.newGame();
+                this.gameTimer();
+              }}
+            >
+              Play Again
+            </button>
+          </div>
+        ) : (
+          <table>
+            <tbody>
+              {this.props.board
+                .map((row, index) => {
+                  return (
+                    <GridRow
+                      index={index}
+                      key={index}
+                      row={row}
+                      tiles={this.props.tiles}
+                      preview={this.props.piece.preview}
+                    />
+                  );
+                })
+                .reverse()}
+            </tbody>
+          </table>
+        )}
+        <div>
+          <h1>Level: {this.props.level}</h1>
+          <h1>Points {this.props.game.points}</h1>
+        </div>
       </div>
     );
   }
@@ -102,7 +118,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     build: () => dispatch(createGrid()),
     createPiece: (grid) => dispatch(createNewPiece(grid)),
-    movePiece: (move, piece, grid) => dispatch(movePiece(move, piece, grid)),
+    movePiece: (move, piece, grid, game) =>
+      dispatch(movePiece(move, piece, grid, game)),
     levelUp: (level) => dispatch(levelUp(level)),
     newGame: () => dispatch(newGame()),
   };

@@ -4,9 +4,7 @@
 //determines validity of coordinates
 //checks for line clears
 //clears lines
-
-import piecesReducer from "./pieces";
-import tilesReducer from "./piece";
+import { addLines } from './game'
 
 const CREATED_GRID = "CREATED_GRID";
 
@@ -23,7 +21,7 @@ const createdGrid = (grid) => {
 //     }
 // }
 
-export const clearLine = (grid) => {
+export const clearLine = (grid, game) => {
   return function (dispatch) {
     let completeLine = [];
 
@@ -39,6 +37,10 @@ export const clearLine = (grid) => {
     completeLine.forEach(line => {
         newGrid.push(Array(10).fill(0))
     })
+    
+    if (completeLine.length) {
+      dispatch(addLines(completeLine.length, game))
+    }
 
     dispatch(createdGrid(newGrid));
   };

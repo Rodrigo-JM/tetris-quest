@@ -3,7 +3,6 @@ import {createLogger} from 'redux-logger'
 import thunk from "redux-thunk"
 import boardReducer from "./board";
 import piecesReducer from './pieces';
-import tilesReducer from './piece';
 import gameReducer from './game'
 
 

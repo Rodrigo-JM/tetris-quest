@@ -153,7 +153,7 @@ export const createNewPiece = (grid) => {
   };
 };
 
-export const movePiece = (move, piece, grid) => {
+export const movePiece = (move, piece, grid, game) => {
   return function (dispatch) {
     let oldPiece = { ...piece };
     let newRotation = piece.rotationIndex;
@@ -187,13 +187,13 @@ export const movePiece = (move, piece, grid) => {
       } else {
         dispatch(killPiece(piece, grid, piece.tiles));
         dispatch(createNewPiece(grid));
-        dispatch(clearLine(grid));
+        dispatch(clearLine(grid, game));
         return;
       }
     } else if (move === "space") {
       dispatch(killPiece(piece, grid, piece.preview));
       dispatch(createNewPiece(grid));
-      dispatch(clearLine(grid));
+      dispatch(clearLine(grid, game));
       return;
     }
     
