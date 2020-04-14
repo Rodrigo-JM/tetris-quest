@@ -1,11 +1,9 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Alegreya SC', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: gray;
+  background-color: teal;
   color: white;
 }
 
@@ -22,18 +20,43 @@ code {
 
 .selectedTile {
   background-color: brown;
-} 
+}
+
+.score {
+  width: 200px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.view {
+  display: flex;
+}
+
+.view > div {
+  margin-right: 150px;
+}
 
 td {
-  width: 1.5em;
-  height: 1.5em;
+  width: 2em;
+  height: 2em;
+  border-radius: 0.2em;
 }
+
+table {
+  border: 0.5em solid;  
+  border-top: 0px;
+  border-collapse: separate;
+  padding: 0.2em;
+  border-color: crimson;
+}
+
 .tile {
-  background-color: blue;
+  opacity: 80%;
+  background-color: brown;
 }
 
 .preview {
-  background-color: cornflowerblue;
+  background-color: burlywood;
 }
 
 .dead {

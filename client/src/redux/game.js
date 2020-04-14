@@ -5,6 +5,15 @@ const NEW_GAME = "NEW_GAME";
 const ENDED_GAME = "ENDED_GAME";
 const ADDED_LINES = "ADDED_LINES";
 const ADDED_POINTS = "ADDED_POINTS";
+const PAUSED_GAME = "PAUSED_GAME";
+const RESUMED_GAME = "RESUMED_GAME"
+
+
+const pausedGame = () => {
+  return {
+    type: PAUSED_GAME,
+  }
+}
 
 const leveledUp = (level) => {
   return {
@@ -19,7 +28,6 @@ const addedPoints = (points) => {
     points
   }
 }
-
 
 const pointsChart = {
   1: function (level) {return 40 * (level + 1)},
@@ -64,6 +72,11 @@ export const addLines = (linesToAdd, game) => {
   }
 }
 
+export const pauseGame = () => {
+  return function (dispatch) {
+    dispatch(pausedGame())
+  }
+}
 
 export const newGame = () => {
   return function (dispatch) {
@@ -82,6 +95,11 @@ export const levelUp = (level) => {
 
 const gameReducer = (state = { playing: true, level: 1, lines: 0, points: 0}, action) => {
   switch (action.type) {
+    case PAUSED_GAME:
+      return {
+        ...state,
+        playing: (state.playing && state.playing !== 'paused') ? 'paused' : true
+      }
     case ADDED_POINTS:
       return {
         ...state,
