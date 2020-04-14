@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  font-family: 'Alegreya SC', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: teal;
+  color: white;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selectedTile {
+  background-color: rgb(177, 72, 72);
+}
+
+.score {
+  width: 200px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.view {
+  display: flex;
+}
+
+.view > div {
+  margin-right: 150px;
+}
+
+td {
+  width: 2em;
+  height: 2em;
+  border-radius: 0.2em;
+}
+
+table {
+  border: 0.5em solid;  
+  border-top: 0px;
+  border-collapse: separate;
+  padding: 0.2em;
+  border-color: crimson;
+}
+
+.tile {
+  opacity: 80%;
+  background-color: brown;
+}
+
+.preview {
+  background-color: burlywood;
+}
+
+.dead {
+  background-color: coral;
+}
+
+.end-game-message > button {
+  background-color: darkred;
+  border: 0px;
+  opacity: 0.8;
+  border-radius: 1em;
+  font-size: 38px;
+  font-family: 'Alegreya SC', serif;
+  color: white;
+  height: 70px;
+  width: 280px;
+}
