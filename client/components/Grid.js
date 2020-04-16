@@ -39,6 +39,10 @@ class Grid extends Component {
     }, 1000 * (1 / (1 + 0.05 * this.props.level)));
   }
 
+  selectTheme(theme) {
+    document.body.className = theme
+  }
+
   handleKeys(event) {
     console.log(event.keyCode);
     const move = keysObj[event.keyCode];
@@ -114,14 +118,48 @@ class Grid extends Component {
             </table>
           </div>
         )}
-        <div>
-          <div className="score">
-            <h1>Level:</h1><h1> {this.props.level}</h1>
-          </div>
-          <div className="score">
-            <h1>Points</h1><h1>{this.props.game.points}</h1>
-          </div>
-        </div>
+        <ul>
+          <li className="score">
+            <h1>Level:</h1>
+            <h1> {this.props.level}</h1>
+          </li>
+          <li className="score">
+            <h1>Points</h1>
+            <h1>{this.props.game.points}</h1>
+          </li>
+          <li className="nav-item has-dropdown">
+            <a className="theme-selector" href="#">
+              Theme
+            </a>
+            <ul className="dropdown">
+              <li className="dropdown-item">
+                <a id="wood" href="#" onClick={() => this.selectTheme('wood')}>
+                  Wood
+                </a>
+              </li>
+              <li className="dropdown-item">
+                <a id="miami" href="#" onClick={() => this.selectTheme('miami')}>
+                  Miami
+                </a>
+              </li>
+              <li className="dropdown-item">
+                <a id="candy" href="#" onClick={() => this.selectTheme('candy')}>
+                  Candy
+                </a>
+              </li>
+              <li className="dropdown-item" onClick={() => this.selectTheme('engine')}>
+                <a id="engine" href="#">
+                  Engine
+                </a>
+              </li>
+              <li className="dropdown-item"onClick={() => this.selectTheme('super')}>
+                <a id="super" href="#">
+                  Super
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     );
   }

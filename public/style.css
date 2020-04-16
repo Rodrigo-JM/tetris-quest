@@ -1,25 +1,157 @@
+
+.wood {
+  --bg: teal;
+  --contrast: darkred;
+  --selectedTile: rgb(177, 72, 72);
+  --border: crimson;
+  --preview: burlywood;
+  --tile: brown;
+  --dead: coral;
+  --text: white;
+}
+
+.miami {
+  --bg: silver;
+  --contrast: darkblue;
+  --selectedTile: teal;
+  --border: hotpink;
+  --preview: hotpink;
+  --tile: darkblue;
+  --dead: grey;
+  --text: white; 
+}
+
+.engine {
+  --bg: darkblue;
+  --contrast: black;
+  --selectedTile: gold;
+  --border: orange;
+  --preview: orange;
+  --tile: black;
+  --dead: grey;
+  --text: white;  
+}
+
+.super {
+  --bg: grey;
+  --contrast: black;
+  --selectedTile: blue;
+  --border: gold;
+  --preview: lightblue;
+  --tile: red;
+  --dead: black;
+  --text: white;  
+}
+
+.candy {
+  --bg: rgb(4, 4, 196);
+  --contrast: black;
+  --selectedTile: darkgoldenrod; 
+  --border: lightcoral;
+  --preview: lightblue;
+  --tile: deeppink;
+  --dead: purple;
+  --text: white;  
+}
+
 body {
   margin: 0;
-  font-family: 'Alegreya SC', serif;
+  font-family: "Alegreya SC", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: teal;
-  color: white;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+ul {
+  list-style: none;
 }
 
-.game {
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+.nav {
+  width: 800px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav > h1 {
+  display: inline;
+}
+
+.nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.dropdown {
+  position: absolute;
+  padding: 0px;
+  width: 180px;
+  opacity: 0;
+  z-index: 2;
+
+  font-size: 28px;
+
+  background-color: var(--contrast);
+  border-top: 2px solid var(--text);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  height: fit-content;
+
+  transform: translateY(50px);
+
+  box-shadow: rgba(2, 8, 20, 0.1) 0px 0.175em 0.5em;
+  transition: opacity 0.15s ease-out;
+}
+
+.theme-selector {
+  font-size: 36px;
+}
+
+.dropdown-item a {
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+}
+
+.dropdown-item a::before {
+  content: " ";
+  border: 2px solid var(--text);
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 25px;
+}
+
+.has-dropdown:focus-within .dropdown {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  align-items: center;
+}
+
 .selectedTile {
-  background-color: rgb(177, 72, 72);
+  background-color: var(--selectedTile);
 }
 
 .score {
@@ -30,6 +162,7 @@ code {
 
 .view {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .view > div {
@@ -43,34 +176,34 @@ td {
 }
 
 table {
-  border: 0.5em solid;  
+  border: 0.5em solid;
   border-top: 0px;
   border-collapse: separate;
   padding: 0.2em;
-  border-color: crimson;
+  border-color: var(--border);
 }
 
 .tile {
   opacity: 80%;
-  background-color: brown;
+  background-color: var(--tile);
 }
 
 .preview {
-  background-color: burlywood;
+  background-color: var(--preview);
 }
 
 .dead {
-  background-color: coral;
+  background-color: var(--dead);
 }
 
 .end-game-message > button {
-  background-color: darkred;
+  background-color: var(--contrast);
   border: 0px;
   opacity: 0.8;
   border-radius: 1em;
   font-size: 38px;
-  font-family: 'Alegreya SC', serif;
-  color: white;
+  font-family: "Alegreya SC", serif;
+  color: var(--text);
   height: 70px;
   width: 280px;
 }

@@ -15,7 +15,22 @@ const User = db.define('user', {
   },
   salt: {
     type: Sequelize.STRING
-  }
+  },
+  theme: {
+    type: Sequelize.STRING,
+    defaultValue: 'wood'
+  },
+  bestScores: {
+    type: Sequelize.ARRAY(Sequelize.INTEGER),
+    defaultValue: [], 
+    get() {
+      let scores = this.getDataValue('bestScores')
+      return scores.sort((a, b) => (a < b) ? 1 : -1)
+    }
+  },
+  googleId: {
+    type: Sequelize.STRING,
+  },
 }, {
   hooks: {
     beforeCreate: setSaltAndPassword,
@@ -31,6 +46,14 @@ User.prototype.correctPassword = function (candidatePassword) {
 User.prototype.sanitize = function () {
   return _.omit(this.toJSON(), ['password', 'salt']);
 };
+
+User.prototype.addBestScore = function (score) {
+  if (this.bestScores[this.bestScores.length - 1] < score) {
+    this.bestScores[this.bestScores.length - 1] = score
+  }
+
+  this.save()
+}
 
 // class methods
 User.generateSalt = function () {
