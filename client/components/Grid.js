@@ -42,6 +42,7 @@ class Grid extends Component {
   }
 
   gameTimer() {
+    console.log('this many calls')
     levelTimer = setInterval(() => {
       let event = { keyCode: 40 };
       this.handleKeys(event);
@@ -78,6 +79,7 @@ class Grid extends Component {
       clearInterval(levelTimer);
       this.props.pause();
     } else if (move === "p" && this.props.game.playing === "paused") {
+      clearInterval(levelTimer);
       this.props.pause();
       this.gameTimer();
     } else if (this.props.game.playing === true) {

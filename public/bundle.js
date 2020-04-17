@@ -509,6 +509,7 @@ var Grid = /*#__PURE__*/function (_Component) {
     value: function gameTimer() {
       var _this2 = this;
 
+      console.log('this many calls');
       levelTimer = setInterval(function () {
         var event = {
           keyCode: 40
@@ -549,6 +550,7 @@ var Grid = /*#__PURE__*/function (_Component) {
         clearInterval(levelTimer);
         this.props.pause();
       } else if (move === "p" && this.props.game.playing === "paused") {
+        clearInterval(levelTimer);
         this.props.pause();
         this.gameTimer();
       } else if (this.props.game.playing === true) {
