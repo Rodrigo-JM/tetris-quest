@@ -509,7 +509,7 @@ var Grid = /*#__PURE__*/function (_Component) {
     value: function gameTimer() {
       var _this2 = this;
 
-      console.log('this many calls');
+      console.log("this many calls");
       levelTimer = setInterval(function () {
         var event = {
           keyCode: 40
@@ -542,7 +542,7 @@ var Grid = /*#__PURE__*/function (_Component) {
     value: function handleKeys(event) {
       var move = keysObj[event.keyCode];
 
-      if (event.type && this.props.game.playing === true) {
+      if (event.type && this.props.game.playing === true && (move === 'down' || move === 'left' || move === 'space' || move === 'up' || move === "right")) {
         event.preventDefault();
       }
 
@@ -630,19 +630,19 @@ var Grid = /*#__PURE__*/function (_Component) {
           return _this3.selectTheme("candy");
         }
       }, "Candy")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-        className: "dropdown-item",
+        className: "dropdown-item"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         onClick: function onClick() {
           return _this3.selectTheme("engine");
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        },
         id: "engine",
         href: "#"
       }, "Engine")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-        className: "dropdown-item",
+        className: "dropdown-item"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         onClick: function onClick() {
           return _this3.selectTheme("super");
-        }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        },
         id: "super",
         href: "#"
       }, "Super")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Controls"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Use \"left\" and \"right\" arrows to move piece", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "\"X\" key and \"up\" arrow rotate piece clockwise", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "\"Z\" key to rotate counter-clockwise", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "\"Down\" key to drop 1 step ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Use \"space-bar\" to drop piece totally")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {

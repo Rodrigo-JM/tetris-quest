@@ -71,7 +71,7 @@ class Grid extends Component {
   handleKeys(event) {
     const move = keysObj[event.keyCode];
 
-    if (event.type && this.props.game.playing === true) {
+    if (event.type && this.props.game.playing === true && (move === 'down' || move === 'left' || move === 'space' || move === 'up' || move === "right")) {
       event.preventDefault();
     }
 
