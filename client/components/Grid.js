@@ -4,7 +4,7 @@ import GridRow from "./GridRow";
 import { createGrid } from "../redux/board";
 import { createNewPiece, movePiece } from "../redux/pieces";
 import { levelUp, newGame, pauseGame } from "../redux/game";
-import {changeTheme} from "../redux/user"
+import { changeTheme } from "../redux/user";
 
 const keysObj = {
   40: "down",
@@ -14,7 +14,7 @@ const keysObj = {
   90: "z",
   88: "x",
   80: "p",
-  38: "up"
+  38: "up",
 };
 
 let levelTimer;
@@ -27,18 +27,18 @@ class Grid extends Component {
     this.gameTimer = this.gameTimer.bind(this);
   }
 
-  componentDidMount() {
+   componentDidMount() {
+    console.log(this.props) 
     this.props.build();
     this.createKeyEvent();
     this.gameTimer();
     this.props.createPiece(this.props.grid);
 
     if (this.props.user.theme) {
-      this.selectTheme(this.props.user.theme)
+      this.selectTheme(this.props.user.theme);
     } else {
-      this.selectTheme('wood')
+      this.selectTheme("wood");
     }
-
   }
 
   gameTimer() {
@@ -50,28 +50,26 @@ class Grid extends Component {
 
   selectTheme(theme) {
     if (document.body.className && document.body.className !== theme) {
-      let themeSelector = document.getElementById(document.body.className)
-      themeSelector.classList.toggle('selected')
-      
-      document.body.className = theme
-      themeSelector = document.getElementById(theme)
-  
-      themeSelector.classList.toggle('selected')
-    } else if (!document.body.className) {
-      document.body.className = theme
-      let themeSelector = document.getElementById(theme)
-      
-      themeSelector.classList.toggle('selected')
+      let themeSelector = document.getElementById(document.body.className);
+      themeSelector.classList.toggle("selected");
 
-      
+      document.body.className = theme;
+      themeSelector = document.getElementById(theme);
+
+      themeSelector.classList.toggle("selected");
+    } else if (!document.body.className) {
+      document.body.className = theme;
+      let themeSelector = document.getElementById(theme);
+
+      themeSelector.classList.toggle("selected");
     }
 
-    this.props.changeTheme(this.props.user, theme)
+    this.props.changeTheme(this.props.user, theme);
   }
 
   handleKeys(event) {
     const move = keysObj[event.keyCode];
-    
+
     if (event.type && this.props.game.playing === true) {
       event.preventDefault();
     }
@@ -87,7 +85,8 @@ class Grid extends Component {
         move,
         this.props.piece,
         this.props.board,
-        this.props.game
+        this.props.game,
+        this.props.user
       );
     }
   }
@@ -163,26 +162,40 @@ class Grid extends Component {
             </a>
             <ul className="dropdown">
               <li className="dropdown-item">
-                <a id="wood" href="#" onClick={() => this.selectTheme('wood')}>
+                <a id="wood" href="#" onClick={() => this.selectTheme("wood")}>
                   Wood
                 </a>
               </li>
               <li className="dropdown-item">
-                <a id="miami" href="#" onClick={() => this.selectTheme('miami')}>
+                <a
+                  id="miami"
+                  href="#"
+                  onClick={() => this.selectTheme("miami")}
+                >
                   Miami
                 </a>
               </li>
               <li className="dropdown-item">
-                <a id="candy" href="#" onClick={() => this.selectTheme('candy')}>
+                <a
+                  id="candy"
+                  href="#"
+                  onClick={() => this.selectTheme("candy")}
+                >
                   Candy
                 </a>
               </li>
-              <li className="dropdown-item" onClick={() => this.selectTheme('engine')}>
+              <li
+                className="dropdown-item"
+                onClick={() => this.selectTheme("engine")}
+              >
                 <a id="engine" href="#">
                   Engine
                 </a>
               </li>
-              <li className="dropdown-item"onClick={() => this.selectTheme('super')}>
+              <li
+                className="dropdown-item"
+                onClick={() => this.selectTheme("super")}
+              >
                 <a id="super" href="#">
                   Super
                 </a>
@@ -192,12 +205,26 @@ class Grid extends Component {
           <li>
             <h1>Controls</h1>
             <p>
-              Use "left" and "right" arrows to move piece<br />
-              "X" key and "up" arrow rotate piece clockwise<br />
-              "Z" key to rotate counter-clockwise<br />
+              Use "left" and "right" arrows to move piece
+              <br />
+              "X" key and "up" arrow rotate piece clockwise
+              <br />
+              "Z" key to rotate counter-clockwise
+              <br />
               "Down" key to drop 1 step <br />
               Use "space-bar" to drop piece totally
             </p>
+          </li>
+          <li className="end-game-message">
+            <button onClick={() => {
+              if (this.props.game.playing === true) {
+               clearInterval(levelTimer);
+              this.props.pause()
+              }
+              this.props.history.push("/leaderboards")
+            }}>
+              Leaderboards  
+            </button>
           </li>
         </ul>
       </div>
@@ -212,7 +239,7 @@ const mapStateToProps = (state) => {
     tiles: state.piece.tiles,
     level: state.game.level,
     game: state.game,
-    user: state.user
+    user: state.user,
   };
 };
 
@@ -220,12 +247,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     build: () => dispatch(createGrid()),
     createPiece: (grid) => dispatch(createNewPiece(grid)),
-    movePiece: (move, piece, grid, game) =>
-      dispatch(movePiece(move, piece, grid, game)),
+    movePiece: (move, piece, grid, game, user) =>
+      dispatch(movePiece(move, piece, grid, game, user)),
     levelUp: (level) => dispatch(levelUp(level)),
     newGame: () => dispatch(newGame()),
     pause: () => dispatch(pauseGame()),
-    changeTheme: (user, theme) => dispatch(changeTheme(user,theme))
+    changeTheme: (user, theme) => dispatch(changeTheme(user, theme)),
   };
 };
 

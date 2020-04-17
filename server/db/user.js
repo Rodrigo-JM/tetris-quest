@@ -30,6 +30,10 @@ const User = db.define(
         return scores.sort((a, b) => (a < b ? 1 : -1));
       },
     },
+    bestScore: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0
+    },
     googleId: {
       type: Sequelize.STRING,
     },
@@ -44,7 +48,6 @@ const User = db.define(
 
 User.prototype.changeTheme = function(theme) {
   this.theme = theme
-  this.save()
 }
 
 // instance methods
@@ -59,12 +62,16 @@ User.prototype.sanitize = function () {
 };
 
 User.prototype.addBestScore = function (score) {
-  if (this.bestScores[this.bestScores.length - 1] < score) {
+  if (!this.bestScores.length || this.bestScores.length <= 5) {
+    this.bestScores.push(score)
+  } else if (this.bestScores[this.bestScores.length - 1] < score) {
     this.bestScores[this.bestScores.length - 1] = score;
   }
-
-  this.save();
 };
+
+User.prototype.updateBestScore = function () {
+  this.bestScore = this.bestScores[0]
+}
 
 // class methods
 User.generateSalt = function () {

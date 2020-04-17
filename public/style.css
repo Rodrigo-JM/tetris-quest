@@ -279,6 +279,9 @@ p {
   border: 0px;
 }
 
+.leaderboards {
+  font-size: 44px;
+}
 
 .end-game-message > button {
   background-color: var(--contrast);

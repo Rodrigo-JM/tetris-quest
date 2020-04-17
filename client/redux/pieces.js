@@ -3,6 +3,7 @@
 //handles player input
 //stores offset datasets
 import { killPiece, clearLine } from "./board";
+import {addScore} from './user'
 
 import {
   JLSTZ_OFFSET_TESTS,
@@ -19,6 +20,7 @@ const endGame = () => {
     type: ENDED_GAME,
   };
 };
+
 const getTestData = (pieceType) => {
   if (pieceType === "O") {
     return O_OFFSET_TESTS;
@@ -108,7 +110,7 @@ const isMoveLegal = (move, piece, grid) => {
   }
 };
 
-export const createPiece = (centerLocation, type, tiles = [], grid = []) => {
+export const createPiece = (centerLocation, type, tiles = [], grid = [], game = {}, user = {}) => {
   return function (dispatch) {
     let location = [4, 19];
 
@@ -133,6 +135,7 @@ export const createPiece = (centerLocation, type, tiles = [], grid = []) => {
     }
 
     if (grid.length && !testTilesForOverlap(piece.tiles, grid)) {
+      dispatch(addScore(user, game.points))
       dispatch(endGame());
       return;
     }
@@ -141,15 +144,15 @@ export const createPiece = (centerLocation, type, tiles = [], grid = []) => {
   };
 };
 
-export const createNewPiece = (grid) => {
+export const createNewPiece = (grid, game = {}, user = {}) => {
   return function (dispatch) {
     let type = pieceTypes[Math.floor(Math.random() * Math.floor(7))];
 
-    dispatch(createPiece(null, type, undefined, grid));
+    dispatch(createPiece(null, type, undefined, grid, game, user));
   };
 };
 
-export const movePiece = (move, piece, grid, game) => {
+export const movePiece = (move, piece, grid, game, user) => {
   return function (dispatch) {
     let oldPiece = { ...piece };
     let newRotation = piece.rotationIndex;
@@ -182,13 +185,13 @@ export const movePiece = (move, piece, grid, game) => {
         piece.tiles = buildTilesForPiece(piece, [0, 0]);
       } else {
         dispatch(killPiece(piece, grid, piece.tiles));
-        dispatch(createNewPiece(grid));
+        dispatch(createNewPiece(grid, game, user));
         dispatch(clearLine(grid, game));
         return;
       }
     } else if (move === "space") {
       dispatch(killPiece(piece, grid, piece.preview));
-      dispatch(createNewPiece(grid));
+      dispatch(createNewPiece(grid, game, user));
       dispatch(clearLine(grid, game));
       return;
     }

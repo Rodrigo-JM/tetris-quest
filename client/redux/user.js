@@ -5,7 +5,15 @@ const FETCH_ME = "FETCH_ME";
 const LOGGED_USER = "LOGGED_USER";
 const LOGGED_OUT_USER = "LOGGED_OUT_USER";
 const CHANGED_THEME = "CHANGED_THEME"
+const ADDED_SCORE = "ADDED_SCORE";
 
+
+const addedScore = user => {
+    return {
+        type: ADDED_SCORE,
+        user
+    }
+}
 const changedTheme = (user) => {
     return {
         type: CHANGED_THEME,
@@ -26,6 +34,18 @@ const loggedOutUser = () => {
     }
 }
 
+export const addScore = (user, score) => {
+    return async function(dispatch) {
+        try {
+            const {data} = await axios.post(`api/users/highscores/${user.id}/add`, {score})
+            
+            dispatch(loggedUser(data))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
 export const logoutUser = () => {
     return async function(dispatch) {
         try {
@@ -42,7 +62,6 @@ export const fetchMe = () => {
     return async function(dispatch) {
         try {
             const { data } = await axios.get('/me')
-            console.log(data)
             dispatch(loggedUser(data))
         } catch (error) {
             console.log(error)
@@ -55,7 +74,6 @@ export const changeTheme = (user, theme) => {
         try {
             if (user.id) {
                 const { data } = await axios.put(`api/users/${user.id}/theme`, {theme})
-                console.log(data)
     
                 dispatch(changedTheme(data))
             }

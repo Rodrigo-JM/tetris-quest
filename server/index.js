@@ -57,7 +57,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../public")));
 
 //request api router
-// app.use("/api", require("./api/index"));
+app.use("/api", require("./api/index"));
 
 //router for user auth actions
 app.use("/login", authRouter)

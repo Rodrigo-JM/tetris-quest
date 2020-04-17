@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import AuthForm from "./components/AuthForm";
 import { fetchMe, logoutUser } from "./redux/user";
 import { pauseGame } from "./redux/game"
+import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom'
+import Leaderboards from './components/Leaderboards'
 
 const modalStyle = {
   content: {
@@ -72,7 +74,12 @@ export class App extends Component {
             </li>
           )}
         </ul>
-        <Grid />
+        <Router>
+          <Switch>
+            <Route exact path="/" render={(props) => (this.props.isFetching) ? <div>Loading...</div> : <Grid {...props} />} />
+            <Route path="/leaderboards" component={Leaderboards} />
+          </Switch>
+        </Router>
       </div>
     );
   }
@@ -81,7 +88,8 @@ export class App extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
-    game: state.game
+    game: state.game,
+    isFetching: state.isFetching
   };
 };
 
