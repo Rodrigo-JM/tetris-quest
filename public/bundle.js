@@ -651,8 +651,6 @@ var Grid = /*#__PURE__*/function (_Component) {
         onClick: function onClick() {
           if (_this3.props.game.playing === true) {
             clearInterval(levelTimer);
-
-            _this3.props.pause();
           }
 
           _this3.props.history.push("/leaderboards");
@@ -832,7 +830,13 @@ var Leaderboards = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ol", {
+      var _this = this;
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          _this.props.history.push("/");
+        }
+      }, "Play"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ol", {
         className: "leaderboards"
       }, this.props.players.map(function (player) {
         console.log(player);

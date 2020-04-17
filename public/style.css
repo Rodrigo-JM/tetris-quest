@@ -122,6 +122,12 @@ a {
 
 .theme-selector {
   font-size: 36px;
+  border: 2px dashed black;
+  padding: 3px;
+  border-radius: 3em;
+  width: 170px;
+  text-align: center;
+
 }
 
 .dropdown-item a {

@@ -221,7 +221,6 @@ class Grid extends Component {
             <button onClick={() => {
               if (this.props.game.playing === true) {
                clearInterval(levelTimer);
-              this.props.pause()
               }
               this.props.history.push("/leaderboards")
             }}>

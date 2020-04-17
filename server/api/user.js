@@ -26,7 +26,7 @@ router.post("/highscores/:id/add", async (req, res, next) => {
     } else {
       user.addBestScore(req.body.score);
       user.updateBestScore()
-      await user.save();
+      await user.update({...user});
 
       res.status(200).send(user);
     }
