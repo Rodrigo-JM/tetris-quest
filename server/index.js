@@ -5,6 +5,7 @@ const passport = require("passport");
 const app = express();
 const session = require("express-session");
 const db = require("./db/db");
+const User = require('./db/user')
 const authRouter = require('./routes/router')
 //creating a store for sessions
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
@@ -37,8 +38,11 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id)
-    .then((user) => done(null, user))
+  User.findByPk(id)
+    .then((user) => {
+      console.log(user)
+      done(null, user)
+    })
     .catch(done);
 });
 

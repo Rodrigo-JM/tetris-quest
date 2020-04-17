@@ -39,7 +39,6 @@ const previewTiles = (tiles, grid) => {
       });
     }
 
-    console.log(preViewTiles);
   }
 
   return preViewTiles;
@@ -89,7 +88,6 @@ const testTilesForOverlap = (tiles, grid, xOffset = 0, yOffset = 0) => {
   const isLegal = tiles.reduce((bool, tile) => {
     let xCoord = tile[0] + xOffset;
     let yCoord = tile[1] + yOffset;
-    console.log(yCoord);
     if (xCoord < 0 || yCoord < 0 || xCoord > 9 || grid[yCoord][xCoord] > 0) {
       return false;
     }
@@ -130,10 +128,8 @@ export const createPiece = (centerLocation, type, tiles = [], grid = []) => {
     if (!piece.tiles.length) {
       piece.tiles = buildTilesForPiece(piece, [0, -1]);
     }
-    // console.log(piece.tiles, 'tileess')
     if (piece.tiles.length) {
       piece.preview = previewTiles(piece.tiles, grid);
-      console.log(piece.preview, "undefined?");
     }
 
     if (grid.length && !testTilesForOverlap(piece.tiles, grid)) {

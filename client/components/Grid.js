@@ -44,7 +44,6 @@ class Grid extends Component {
   }
 
   handleKeys(event) {
-    console.log(event.keyCode);
     const move = keysObj[event.keyCode];
     if (move === "p" && this.props.game.playing === true) {
       clearInterval(levelTimer);

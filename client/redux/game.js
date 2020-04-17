@@ -52,7 +52,6 @@ const addedLines = (lines) => {
 
 const countPoints = (game, linesToAdd) => {
   return function (dispatch) {
-    console.log(linesToAdd, 'lines to add')
     const pointsToAdd = pointsChart[linesToAdd](game.level) + game.points
 
     dispatch(addedPoints(pointsToAdd))

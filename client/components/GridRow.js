@@ -2,7 +2,6 @@ import React from 'react'
 import GridTile from './GridTile'
 
 export default function GridRow(props) {
-    console.log('preview', props.preview)
     return (
         <tr className={(props.index < 2) ? 'red' : ''}>
             {

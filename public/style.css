@@ -61,6 +61,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bg);
   color: var(--text);
+
+  transition: background-color 500ms ease-in-out;
 }
 
 ul {
@@ -80,8 +82,9 @@ a {
   align-items: center;
 }
 
-.nav > h1 {
-  display: inline;
+.title {
+  /* display: inline; */
+  text-align: center;
 }
 
 .nav-item {
@@ -191,10 +194,73 @@ table {
 .preview {
   background-color: var(--preview);
 }
+/* 
+.react-tabs {
+  background-color: rgb(4, 4, 196);
+} */
+
+.react-tabs__tab-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.react-tabs__tab {
+  font-size: 36px;
+  color: white;
+  width: 120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.react-tabs__tab--selected{
+  border: 2px dashed black;
+
+}
+.react-tabs__tab-panel--selected{
+  padding: 10px;
+}
+
 
 .dead {
   background-color: var(--dead);
 }
+
+.user-form  form {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-form  button {
+  width: 200px;
+  height: 35px;
+  opacity: 0.7;
+  border: 0px;
+  border-radius: 15px;
+  font-family: "Alegreya SC", serif;
+  font-size: 28px;
+  color: white;
+  background-color: yellowgreen;
+}
+
+.user-form  button:focus {
+  outline: none;
+  opacity: 0.7;
+}
+
+.user-form  button:hover {
+  outline: none;
+  opacity: 1;
+}
+
+.user-form  form > input {
+  margin-bottom: 20px;
+  height: 45px;
+  border: 0px;
+}
+
 
 .end-game-message > button {
   background-color: var(--contrast);
@@ -206,4 +272,15 @@ table {
   color: var(--text);
   height: 70px;
   width: 280px;
+}
+
+.auth-menu {
+  flex: 1 1 15%;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.title {
+  flex: 5 5 85%
 }
