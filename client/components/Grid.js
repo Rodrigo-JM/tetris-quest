@@ -28,7 +28,6 @@ class Grid extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.props.build();
     this.createKeyEvent();
     this.gameTimer();

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { newGame } from "../redux/game";
 import { getLeaderboards } from "../redux/leaderboards";
 export class Leaderboards extends Component {
   componentDidMount() {
@@ -9,13 +10,9 @@ export class Leaderboards extends Component {
   render() {
     return (
       <div>
-        <button
-          onClick={() => {
-            this.props.history.push("/");
-          }}
-        >
-          Play
-        </button>
+        <div className="play">
+          <a href="/">Play</a>
+        </div>
         <ol className="leaderboards">
           {this.props.players.map((player) => {
             console.log(player);
@@ -39,6 +36,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    newGame: () => dispatch(newGame()),
     getLeaderboards: () => dispatch(getLeaderboards()),
   };
 };

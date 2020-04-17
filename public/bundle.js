@@ -492,7 +492,6 @@ var Grid = /*#__PURE__*/function (_Component) {
   _createClass(Grid, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log(this.props);
       this.props.build();
       this.createKeyEvent();
       this.gameTimer();
@@ -785,7 +784,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _redux_leaderboards__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/leaderboards */ "./client/redux/leaderboards.js");
+/* harmony import */ var _redux_game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/game */ "./client/redux/game.js");
+/* harmony import */ var _redux_leaderboards__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../redux/leaderboards */ "./client/redux/leaderboards.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -811,6 +811,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var Leaderboards = /*#__PURE__*/function (_Component) {
   _inherits(Leaderboards, _Component);
 
@@ -830,13 +831,11 @@ var Leaderboards = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this = this;
-
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        onClick: function onClick() {
-          _this.props.history.push("/");
-        }
-      }, "Play"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ol", {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "play"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        href: "/"
+      }, "Play")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ol", {
         className: "leaderboards"
       }, this.props.players.map(function (player) {
         console.log(player);
@@ -858,8 +857,11 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
+    newGame: function newGame() {
+      return dispatch(Object(_redux_game__WEBPACK_IMPORTED_MODULE_2__["newGame"])());
+    },
     getLeaderboards: function getLeaderboards() {
-      return dispatch(Object(_redux_leaderboards__WEBPACK_IMPORTED_MODULE_2__["getLeaderboards"])());
+      return dispatch(Object(_redux_leaderboards__WEBPACK_IMPORTED_MODULE_3__["getLeaderboards"])());
     }
   };
 };
@@ -1747,6 +1749,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //stores offset datasets
 
 
+var NEW_GAME = "NEW_GAME";
 
 var CREATED_PIECE = "CREATED_PIECE";
 var CLEAR_TILES = "CLEAR_TILES";
@@ -1953,6 +1956,9 @@ var piecesReducer = function piecesReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case NEW_GAME:
+      return {};
+
     case CREATED_PIECE:
       return action.piece;
 

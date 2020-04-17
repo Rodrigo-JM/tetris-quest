@@ -301,6 +301,29 @@ p {
   width: 280px;
 }
 
+.end-game-message > button:hover {
+  opacity: 1;
+}
+.play {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.play > a {
+  padding-top: 10px;
+  background-color: var(--contrast);
+  border: 0px;
+  opacity: 0.8;
+  border-radius: 1em;
+  font-size: 38px;
+  font-family: "Alegreya SC", serif;
+  color: var(--text);
+  height: 70px;
+  text-align: center;
+  width: 300px;
+}
+
 .auth-menu {
   flex: 1 1 15%;
   width: 100%;

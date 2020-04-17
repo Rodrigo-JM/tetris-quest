@@ -5,6 +5,8 @@
 import { killPiece, clearLine } from "./board";
 import {addScore} from './user'
 
+const NEW_GAME = "NEW_GAME"
+
 import {
   JLSTZ_OFFSET_TESTS,
   I_OFFSET_TESTS,
@@ -204,6 +206,8 @@ export const movePiece = (move, piece, grid, game, user) => {
 
 const piecesReducer = (state = {}, action) => {
   switch (action.type) {
+    case NEW_GAME: 
+      return {}
     case CREATED_PIECE:
       return action.piece;
     default:
