@@ -439,7 +439,8 @@ var keysObj = {
   32: "space",
   90: "z",
   88: "x",
-  80: "p"
+  80: "p",
+  38: "up"
 };
 var levelTimer;
 
@@ -472,6 +473,12 @@ var Grid = /*#__PURE__*/function (_Component) {
       this.createKeyEvent();
       this.gameTimer();
       this.props.createPiece(this.props.grid);
+
+      if (this.props.user.theme) {
+        this.selectTheme(this.props.user.theme);
+      } else {
+        this.selectTheme('wood');
+      }
     }
   }, {
     key: "gameTimer",
@@ -489,7 +496,19 @@ var Grid = /*#__PURE__*/function (_Component) {
   }, {
     key: "selectTheme",
     value: function selectTheme(theme) {
-      document.body.className = theme;
+      if (document.body.className && document.body.className !== theme) {
+        var themeSelector = document.getElementById(document.body.className);
+        themeSelector.classList.toggle('selected');
+        document.body.className = theme;
+        themeSelector = document.getElementById(theme);
+        themeSelector.classList.toggle('selected');
+      } else if (!document.body.className) {
+        document.body.className = theme;
+
+        var _themeSelector = document.getElementById(theme);
+
+        _themeSelector.classList.toggle('selected');
+      }
     }
   }, {
     key: "handleKeys",
@@ -594,7 +613,7 @@ var Grid = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         id: "super",
         href: "#"
-      }, "Super"))))));
+      }, "Super")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Controls"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Use \"left\" and \"right\" arrows to move piece", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "\"X\" key and \"up\" arrow rotate piece clockwise", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "\"Z\" key to rotate counter-clockwise", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "\"Down\" key to drop 1 step ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), "Use \"space-bar\" to drop piece totally"))));
     }
   }]);
 
@@ -607,7 +626,8 @@ var mapStateToProps = function mapStateToProps(state) {
     piece: state.piece,
     tiles: state.piece.tiles,
     level: state.game.level,
-    game: state.game
+    game: state.game,
+    user: state.user
   };
 };
 
@@ -1304,6 +1324,12 @@ var ADDED_LINES = "ADDED_LINES";
 var ADDED_POINTS = "ADDED_POINTS";
 var PAUSED_GAME = "PAUSED_GAME";
 var RESUMED_GAME = "RESUMED_GAME";
+var newGameObj = {
+  playing: true,
+  level: 1,
+  lines: 0,
+  points: 0
+};
 
 var pausedGame = function pausedGame() {
   return {
@@ -1391,12 +1417,7 @@ var levelUp = function levelUp(level) {
 };
 
 var gameReducer = function gameReducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
-    playing: true,
-    level: 1,
-    lines: 0,
-    points: 0
-  };
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : newGameObj;
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
@@ -1416,10 +1437,7 @@ var gameReducer = function gameReducer() {
       });
 
     case NEW_GAME:
-      return {
-        level: 1,
-        playing: true
-      };
+      return newGameObj;
 
     case ENDED_GAME:
       return _objectSpread({}, state, {
@@ -1634,7 +1652,7 @@ var movePiece = function movePiece(move, piece, grid, game) {
     } else if (move === "left" && isMoveLegal(move, piece, grid)) {
       piece.center[0] -= 1;
       piece.tiles = buildTilesForPiece(piece, [0, 0]);
-    } else if (move === "x") {
+    } else if (move === "x" || move === "up") {
       piece.rotationIndex = ((newRotation + 1) % 4 + 4) % 4;
       piece.tiles = rotatePiece(piece, grid);
 

@@ -13,6 +13,7 @@ const keysObj = {
   90: "z",
   88: "x",
   80: "p",
+  38: "up"
 };
 
 let levelTimer;
@@ -30,6 +31,13 @@ class Grid extends Component {
     this.createKeyEvent();
     this.gameTimer();
     this.props.createPiece(this.props.grid);
+
+    if (this.props.user.theme) {
+      this.selectTheme(this.props.user.theme)
+    } else {
+      this.selectTheme('wood')
+    }
+
   }
 
   gameTimer() {
@@ -40,7 +48,20 @@ class Grid extends Component {
   }
 
   selectTheme(theme) {
-    document.body.className = theme
+    if (document.body.className && document.body.className !== theme) {
+      let themeSelector = document.getElementById(document.body.className)
+      themeSelector.classList.toggle('selected')
+      
+      document.body.className = theme
+      themeSelector = document.getElementById(theme)
+  
+      themeSelector.classList.toggle('selected')
+    } else if (!document.body.className) {
+      document.body.className = theme
+      let themeSelector = document.getElementById(theme)
+  
+      themeSelector.classList.toggle('selected')
+    }
   }
 
   handleKeys(event) {
@@ -158,6 +179,16 @@ class Grid extends Component {
               </li>
             </ul>
           </li>
+          <li>
+            <h1>Controls</h1>
+            <p>
+              Use "left" and "right" arrows to move piece<br />
+              "X" key and "up" arrow rotate piece clockwise<br />
+              "Z" key to rotate counter-clockwise<br />
+              "Down" key to drop 1 step <br />
+              Use "space-bar" to drop piece totally
+            </p>
+          </li>
         </ul>
       </div>
     );
@@ -171,6 +202,7 @@ const mapStateToProps = (state) => {
     tiles: state.piece.tiles,
     level: state.game.level,
     game: state.game,
+    user: state.user
   };
 };
 

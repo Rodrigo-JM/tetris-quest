@@ -8,6 +8,7 @@ const ADDED_POINTS = "ADDED_POINTS";
 const PAUSED_GAME = "PAUSED_GAME";
 const RESUMED_GAME = "RESUMED_GAME"
 
+const newGameObj = { playing: true, level: 1, lines: 0, points: 0}
 
 const pausedGame = () => {
   return {
@@ -92,7 +93,7 @@ export const levelUp = (level) => {
   };
 };
 
-const gameReducer = (state = { playing: true, level: 1, lines: 0, points: 0}, action) => {
+const gameReducer = (state = newGameObj, action) => {
   switch (action.type) {
     case PAUSED_GAME:
       return {
@@ -110,10 +111,8 @@ const gameReducer = (state = { playing: true, level: 1, lines: 0, points: 0}, ac
         lines: action.lines
       }
     case NEW_GAME:
-      return {
-        level: 1,
-        playing: true,
-      };
+      return newGameObj
+      
     case ENDED_GAME:
       return {
         ...state,

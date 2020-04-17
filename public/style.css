@@ -34,12 +34,12 @@
 
 .super {
   --bg: grey;
-  --contrast: black;
-  --selectedTile: blue;
+  --contrast: black; 
+  --selectedTile: orange;
   --border: gold;
-  --preview: lightblue;
-  --tile: red;
-  --dead: black;
+  --preview: red;
+  --tile: darkred;
+  --dead: darkblue;
   --text: white;  
 }
 
@@ -141,6 +141,19 @@ a {
   margin-right: 25px;
 }
 
+.dropdown-item .selected::before {
+  content: " ";
+  background-color: var(--text);
+  font-size: 1em;
+  border: 2px solid var(--text);
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 25px;
+}
+
 .has-dropdown:focus-within .dropdown {
   opacity: 1;
   pointer-events: auto;
@@ -223,6 +236,10 @@ table {
   padding: 10px;
 }
 
+p {
+  font-size: 24px;
+  color: var(--text);
+}
 
 .dead {
   background-color: var(--dead);

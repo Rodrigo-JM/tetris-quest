@@ -161,7 +161,7 @@ export const movePiece = (move, piece, grid, game) => {
       piece.center[0] -= 1;
 
       piece.tiles = buildTilesForPiece(piece, [0, 0]);
-    } else if (move === "x") {
+    } else if (move === "x" || move === "up") {
       piece.rotationIndex = (((newRotation + 1) % 4) + 4) % 4;
 
       piece.tiles = rotatePiece(piece, grid);
