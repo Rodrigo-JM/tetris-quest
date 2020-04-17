@@ -515,6 +515,10 @@ var Grid = /*#__PURE__*/function (_Component) {
     value: function handleKeys(event) {
       var move = keysObj[event.keyCode];
 
+      if (event.type) {
+        event.preventDefault();
+      }
+
       if (move === "p" && this.props.game.playing === true) {
         clearInterval(levelTimer);
         this.props.pause();

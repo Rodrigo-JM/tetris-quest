@@ -66,6 +66,11 @@ class Grid extends Component {
 
   handleKeys(event) {
     const move = keysObj[event.keyCode];
+    
+    if (event.type) {
+      event.preventDefault();
+    }
+
     if (move === "p" && this.props.game.playing === true) {
       clearInterval(levelTimer);
       this.props.pause();

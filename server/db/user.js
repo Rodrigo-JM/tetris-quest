@@ -42,6 +42,11 @@ const User = db.define(
   }
 );
 
+User.prototype.changeTheme = function(theme) {
+  this.theme = theme
+  this.save()
+}
+
 // instance methods
 User.prototype.correctPassword = function (candidatePassword) {
   return (
