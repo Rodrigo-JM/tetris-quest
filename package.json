@@ -1,11 +1,12 @@
 {
-  "name": "boiler-plate",
+  "name": "tetris-quest",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "start.js",
   "scripts": {
-    "start": "node server",
-    "start-dev": "webpack -w & nodemon start.js"
+    "start": "node start.js",
+    "start-dev": "webpack -w & nodemon start.js",
+    "deploy": "script/deploy"
   },
   "author": "",
   "license": "ISC",
