@@ -4,6 +4,14 @@ import axios from 'axios'
 const FETCH_ME = "FETCH_ME";
 const LOGGED_USER = "LOGGED_USER";
 const LOGGED_OUT_USER = "LOGGED_OUT_USER";
+const CHANGED_THEME = "CHANGED_THEME"
+
+const changedTheme = (user) => {
+    return {
+        type: CHANGED_THEME,
+        user
+    }
+}
 
 const loggedUser = user => {
     return {
@@ -42,6 +50,20 @@ export const fetchMe = () => {
     }
 }
 
+export const changeTheme = (user, theme) => {
+    return async function (dispatch) {
+        try {
+            if (user.id) {
+                const { data } = await axios.put(`api/users/${user.id}/theme`, {theme})
+                console.log(data)
+    
+                dispatch(changedTheme(data))
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
 
 export const signUser = (user) => {
     return async function(dispatch) {

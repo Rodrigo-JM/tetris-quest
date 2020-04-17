@@ -179,6 +179,7 @@ a {
 .view {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .view > div {

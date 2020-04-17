@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AuthForm from "./components/AuthForm";
 import { fetchMe, logoutUser } from "./redux/user";
+import { pauseGame } from "./redux/game"
 
 const modalStyle = {
   content: {
@@ -31,6 +32,7 @@ export class App extends Component {
 
   openForm() {
     this.setState({ formOpen: true });
+    this.props.pause()
   }
 
   closeForm() {
@@ -79,13 +81,15 @@ export class App extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    game: state.game
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchMe: () => dispatch(fetchMe()),
-    logoutUser: () => dispatch(logoutUser())
+    logoutUser: () => dispatch(logoutUser()),
+    pause: () => dispatch(pauseGame()),
   };
 };
 

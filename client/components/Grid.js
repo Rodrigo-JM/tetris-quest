@@ -4,6 +4,7 @@ import GridRow from "./GridRow";
 import { createGrid } from "../redux/board";
 import { createNewPiece, movePiece } from "../redux/pieces";
 import { levelUp, newGame, pauseGame } from "../redux/game";
+import {changeTheme} from "../redux/user"
 
 const keysObj = {
   40: "down",
@@ -59,15 +60,19 @@ class Grid extends Component {
     } else if (!document.body.className) {
       document.body.className = theme
       let themeSelector = document.getElementById(theme)
-  
+      
       themeSelector.classList.toggle('selected')
+
+      
     }
+
+    this.props.changeTheme(this.props.user, theme)
   }
 
   handleKeys(event) {
     const move = keysObj[event.keyCode];
     
-    if (event.type) {
+    if (event.type && this.props.game.playing === true) {
       event.preventDefault();
     }
 
@@ -220,6 +225,7 @@ const mapDispatchToProps = (dispatch) => {
     levelUp: (level) => dispatch(levelUp(level)),
     newGame: () => dispatch(newGame()),
     pause: () => dispatch(pauseGame()),
+    changeTheme: (user, theme) => dispatch(changeTheme(user,theme))
   };
 };
 

@@ -104,6 +104,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _components_AuthForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/AuthForm */ "./client/components/AuthForm.js");
 /* harmony import */ var _redux_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./redux/user */ "./client/redux/user.js");
+/* harmony import */ var _redux_game__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./redux/game */ "./client/redux/game.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -125,6 +126,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -169,6 +171,7 @@ var App = /*#__PURE__*/function (_Component) {
       this.setState({
         formOpen: true
       });
+      this.props.pause();
     }
   }, {
     key: "closeForm",
@@ -223,7 +226,8 @@ var App = /*#__PURE__*/function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user,
+    game: state.game
   };
 };
 
@@ -234,6 +238,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     logoutUser: function logoutUser() {
       return dispatch(Object(_redux_user__WEBPACK_IMPORTED_MODULE_5__["logoutUser"])());
+    },
+    pause: function pause() {
+      return dispatch(Object(_redux_game__WEBPACK_IMPORTED_MODULE_6__["pauseGame"])());
     }
   };
 };
@@ -404,6 +411,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _redux_board__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../redux/board */ "./client/redux/board.js");
 /* harmony import */ var _redux_pieces__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../redux/pieces */ "./client/redux/pieces.js");
 /* harmony import */ var _redux_game__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../redux/game */ "./client/redux/game.js");
+/* harmony import */ var _redux_user__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../redux/user */ "./client/redux/user.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -425,6 +433,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -509,13 +518,15 @@ var Grid = /*#__PURE__*/function (_Component) {
 
         _themeSelector.classList.toggle('selected');
       }
+
+      this.props.changeTheme(this.props.user, theme);
     }
   }, {
     key: "handleKeys",
     value: function handleKeys(event) {
       var move = keysObj[event.keyCode];
 
-      if (event.type) {
+      if (event.type && this.props.game.playing === true) {
         event.preventDefault();
       }
 
@@ -654,6 +665,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     pause: function pause() {
       return dispatch(Object(_redux_game__WEBPACK_IMPORTED_MODULE_5__["pauseGame"])());
+    },
+    changeTheme: function changeTheme(user, theme) {
+      return dispatch(Object(_redux_user__WEBPACK_IMPORTED_MODULE_6__["changeTheme"])(user, theme));
     }
   };
 };
@@ -1809,13 +1823,14 @@ var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(rootReduce
 /*!******************************!*\
   !*** ./client/redux/user.js ***!
   \******************************/
-/*! exports provided: logoutUser, fetchMe, signUser, logUser, default */
+/*! exports provided: logoutUser, fetchMe, changeTheme, signUser, logUser, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logoutUser", function() { return logoutUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMe", function() { return fetchMe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeTheme", function() { return changeTheme; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "signUser", function() { return signUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logUser", function() { return logUser; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -1828,6 +1843,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var FETCH_ME = "FETCH_ME";
 var LOGGED_USER = "LOGGED_USER";
 var LOGGED_OUT_USER = "LOGGED_OUT_USER";
+var CHANGED_THEME = "CHANGED_THEME";
+
+var changedTheme = function changedTheme(user) {
+  return {
+    type: CHANGED_THEME,
+    user: user
+  };
+};
 
 var loggedUser = function loggedUser(user) {
   return {
@@ -1915,38 +1938,48 @@ var fetchMe = function fetchMe() {
     };
   }();
 };
-var signUser = function signUser(user) {
+var changeTheme = function changeTheme(user, theme) {
   return /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(dispatch) {
-      var _yield$axios$post, data;
+      var _yield$axios$put, data;
 
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
               _context3.prev = 0;
-              _context3.next = 3;
-              return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/signup', user);
 
-            case 3:
-              _yield$axios$post = _context3.sent;
-              data = _yield$axios$post.data;
+              if (!user.id) {
+                _context3.next = 8;
+                break;
+              }
+
+              _context3.next = 4;
+              return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("api/users/".concat(user.id, "/theme"), {
+                theme: theme
+              });
+
+            case 4:
+              _yield$axios$put = _context3.sent;
+              data = _yield$axios$put.data;
               console.log(data);
-              dispatch(loggedUser(data));
-              _context3.next = 12;
+              dispatch(changedTheme(data));
+
+            case 8:
+              _context3.next = 13;
               break;
 
-            case 9:
-              _context3.prev = 9;
+            case 10:
+              _context3.prev = 10;
               _context3.t0 = _context3["catch"](0);
               console.log(_context3.t0);
 
-            case 12:
+            case 13:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, null, [[0, 9]]);
+      }, _callee3, null, [[0, 10]]);
     }));
 
     return function (_x3) {
@@ -1954,10 +1987,10 @@ var signUser = function signUser(user) {
     };
   }();
 };
-var logUser = function logUser(user) {
+var signUser = function signUser(user) {
   return /*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(dispatch) {
-      var _yield$axios$put, data;
+      var _yield$axios$post, data;
 
       return regeneratorRuntime.wrap(function _callee4$(_context4) {
         while (1) {
@@ -1965,11 +1998,11 @@ var logUser = function logUser(user) {
             case 0:
               _context4.prev = 0;
               _context4.next = 3;
-              return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put('/login', user);
+              return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/signup', user);
 
             case 3:
-              _yield$axios$put = _context4.sent;
-              data = _yield$axios$put.data;
+              _yield$axios$post = _context4.sent;
+              data = _yield$axios$post.data;
               console.log(data);
               dispatch(loggedUser(data));
               _context4.next = 12;
@@ -1990,6 +2023,45 @@ var logUser = function logUser(user) {
 
     return function (_x4) {
       return _ref4.apply(this, arguments);
+    };
+  }();
+};
+var logUser = function logUser(user) {
+  return /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(dispatch) {
+      var _yield$axios$put2, data;
+
+      return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.prev = 0;
+              _context5.next = 3;
+              return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put('/login', user);
+
+            case 3:
+              _yield$axios$put2 = _context5.sent;
+              data = _yield$axios$put2.data;
+              console.log(data);
+              dispatch(loggedUser(data));
+              _context5.next = 12;
+              break;
+
+            case 9:
+              _context5.prev = 9;
+              _context5.t0 = _context5["catch"](0);
+              console.log(_context5.t0);
+
+            case 12:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5, null, [[0, 9]]);
+    }));
+
+    return function (_x5) {
+      return _ref5.apply(this, arguments);
     };
   }();
 };
