@@ -27,8 +27,8 @@ class Grid extends Component {
     this.gameTimer = this.gameTimer.bind(this);
   }
 
-   componentDidMount() {
-    console.log(this.props) 
+  componentDidMount() {
+    console.log(this.props);
     this.props.build();
     this.createKeyEvent();
     this.gameTimer();
@@ -42,7 +42,7 @@ class Grid extends Component {
   }
 
   gameTimer() {
-    console.log('this many calls')
+    console.log("this many calls");
     levelTimer = setInterval(() => {
       let event = { keyCode: 40 };
       this.handleKeys(event);
@@ -186,19 +186,21 @@ class Grid extends Component {
                   Candy
                 </a>
               </li>
-              <li
-                className="dropdown-item"
-                onClick={() => this.selectTheme("engine")}
-              >
-                <a id="engine" href="#">
+              <li className="dropdown-item">
+                <a
+                  onClick={() => this.selectTheme("engine")}
+                  id="engine"
+                  href="#"
+                >
                   Engine
                 </a>
               </li>
-              <li
-                className="dropdown-item"
-                onClick={() => this.selectTheme("super")}
-              >
-                <a id="super" href="#">
+              <li className="dropdown-item">
+                <a
+                  onClick={() => this.selectTheme("super")}
+                  id="super"
+                  href="#"
+                >
                   Super
                 </a>
               </li>
@@ -218,13 +220,15 @@ class Grid extends Component {
             </p>
           </li>
           <li className="end-game-message">
-            <button onClick={() => {
-              if (this.props.game.playing === true) {
-               clearInterval(levelTimer);
-              }
-              this.props.history.push("/leaderboards")
-            }}>
-              Leaderboards  
+            <button
+              onClick={() => {
+                if (this.props.game.playing === true) {
+                  clearInterval(levelTimer);
+                }
+                this.props.history.push("/leaderboards");
+              }}
+            >
+              Leaderboards
             </button>
           </li>
         </ul>
