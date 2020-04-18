@@ -206,8 +206,6 @@ export const movePiece = (move, piece, grid, game, user) => {
 
 const piecesReducer = (state = {}, action) => {
   switch (action.type) {
-    case NEW_GAME: 
-      return {}
     case CREATED_PIECE:
       return action.piece;
     default:

@@ -23,15 +23,11 @@ const User = db.define(
       defaultValue: "wood",
     },
     bestScores: {
-      type: Sequelize.ARRAY(Sequelize.INTEGER),
+      type: Sequelize.ARRAY(Sequelize.BIGINT),
       defaultValue: [],
-      get() {
-        let scores = this.getDataValue("bestScores");
-        return scores.sort((a, b) => (a < b ? 1 : -1));
-      },
     },
     bestScore: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.BIGINT,
       defaultValue: 0
     },
     googleId: {
@@ -61,18 +57,18 @@ User.prototype.sanitize = function () {
   return _.omit(this.toJSON(), ["password", "salt"]);
 };
 
-User.prototype.addBestScore = function (score) {
-  if (!this.bestScores.length || this.bestScores.length <= 5) {
-    this.bestScores.push(score)
-  } else if (this.bestScores[this.bestScores.length - 1] < score) {
-    this.bestScores[this.bestScores.length - 1] = score;
-  }
-};
-
-User.prototype.updateBestScore = function () {
-  this.bestScore = this.bestScores[0]
+User.prototype.addScore = function (score) {
+  let scores = [...this.bestScores]
+  scores.push(score)
+  this.update({bestScores: scores})
 }
 
+User.prototype.updateBestScore = function () {
+  let scores = this.bestScores
+  scores = scores.sort((a, b) => (a < b) ? 1 : -1);
+
+  this.bestScore = scores[0]
+}
 // class methods
 User.generateSalt = function () {
   return crypto.randomBytes(16).toString("base64");

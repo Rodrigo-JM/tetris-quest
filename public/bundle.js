@@ -1956,9 +1956,6 @@ var piecesReducer = function piecesReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case NEW_GAME:
-      return {};
-
     case CREATED_PIECE:
       return action.piece;
 

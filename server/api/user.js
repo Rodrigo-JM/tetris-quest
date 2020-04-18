@@ -17,16 +17,24 @@ router.put("/:id/theme", async (req, res, next) => {
     next(err);
   }
 });
-
+router.get('/:id/bestscores', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id)
+    console.log(user)
+    res.status(200).send(user.bestScores)
+  } catch(err) {
+    next(err)
+  }
+})
 router.post("/highscores/:id/add", async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id);
     if (user === null) {
       res.sendStatus(404);
     } else {
-      user.addBestScore(req.body.score);
+      user.addScore(req.body.score)
       user.updateBestScore()
-      await user.update({...user});
+      await user.save();
 
       res.status(200).send(user);
     }
